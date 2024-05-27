@@ -1,0 +1,79 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h> 
+
+void AbsElem(float matrix[], int rows, int cols) {
+    float maxAbs = 0;
+
+    for (int i = 0; i < rows * cols; i++) {
+        if (fabs(matrix[i]) > maxAbs) {
+            maxAbs = fabs(matrix[i]);
+        }
+    }
+
+    for (int i = 0; i < rows * cols; i++) {
+        matrix[i] /= maxAbs;
+    }
+}
+
+int main() {
+    char choice;
+    do {
+        int rows, cols;
+
+        printf("Введіть кількість рядків матриці: ");
+        while (scanf("%d", &rows) != 1 || rows <= 0) {
+            printf("Некоректний ввід. Будь ласка, введіть ціле додатне число: ");
+            while (getchar() != '\n');
+        }
+
+        printf("Введіть кількість стовпців матриці: ");
+        while (scanf("%d", &cols) != 1 || cols <= 0) {
+            printf("Некоректний ввід. Будь ласка, введіть ціле додатне число: ");
+            while (getchar() != '\n');
+        }
+
+        float matrix[rows][cols];
+
+        printf("Введіть елементи матриці:\n");
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                printf("Введіть елемент матриці [%d][%d]: ", i + 1, j + 1);
+                while (scanf("%f", &matrix[i][j]) != 1) {
+                    printf("Некоректний ввід. Будь ласка, введіть дійсне число: ");
+                    while (getchar() != '\n');
+                }
+            }
+        }
+
+        printf("Початкова матриця:\n");
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                printf("%.2f\t", matrix[i][j]);
+            }
+            printf("\n");
+        }
+
+        AbsElem(matrix[0], rows, cols);
+
+        printf("Матриця після поділу на найбільший за модулем елемент:\n");
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                printf("%.2f\t", matrix[i][j]);
+            }
+            printf("\n");
+        }
+
+        // Меню в кінці коду
+        printf("\nМеню:\n");
+        printf("1. Почати заново\n");
+        printf("0. Закінчити\n");
+        printf("Ваш вибір: ");
+        scanf(" %c", &choice);
+        getchar();
+
+    } while (choice != '0');
+
+    printf("Завершення програми.\n");
+    return 0;
+}
