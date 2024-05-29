@@ -1,78 +1,85 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h> 
+#include <math.h>
 
-void AbsElem(float matrix[], int rows, int cols) {
-    float maxAbs = 0;
+#define MAX_SIZE 10
 
-    for (int i = 0; i < rows * cols; i++) {
-        if (fabs(matrix[i]) > maxAbs) {
-            maxAbs = fabs(matrix[i]);
+void AbsElem(double matrix[MAX_SIZE][MAX_SIZE], int n, int m) {
+    double maxAbs = 0.0;
+    
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            if (fabs(matrix[i][j]) > maxAbs) {
+                maxAbs = fabs(matrix[i][j]);
+            }
         }
     }
 
-    for (int i = 0; i < rows * cols; i++) {
-        matrix[i] /= maxAbs;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            matrix[i][j] /= maxAbs;
+        }
     }
 }
 
 int main() {
-    char choice;
+    double matrix[MAX_SIZE][MAX_SIZE];
+    int n, m, choice;
+
     do {
-        int rows, cols;
-
-        printf("Введіть кількість рядків матриці: ");
-        while (scanf("%d", &rows) != 1 || rows <= 0) {
-            printf("Некоректний ввід. Будь ласка, введіть ціле додатне число: ");
+        printf("Введіть кількість рядків матриці (натуральне число до %d): ", MAX_SIZE);
+        if (scanf("%d", &n) != 1 || n < 1 || n > MAX_SIZE) {
+            printf("Помилка: введено некоректне значення.\n");
             while (getchar() != '\n');
+            continue;
         }
 
-        printf("Введіть кількість стовпців матриці: ");
-        while (scanf("%d", &cols) != 1 || cols <= 0) {
-            printf("Некоректний ввід. Будь ласка, введіть ціле додатне число: ");
+        printf("Введіть кількість стовпців матриці (натуральне число до %d): ", MAX_SIZE);
+        if (scanf("%d", &m) != 1 || m < 1 || m > MAX_SIZE) {
+            printf("Помилка: введено некоректне значення.\n");
             while (getchar() != '\n');
+            continue;
         }
 
-        float matrix[rows][cols];
-
-        printf("Введіть елементи матриці:\n");
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                printf("Введіть елемент матриці [%d][%d]: ", i + 1, j + 1);
-                while (scanf("%f", &matrix[i][j]) != 1) {
-                    printf("Некоректний ввід. Будь ласка, введіть дійсне число: ");
+        printf("Введіть елементи матриці по рядках:\n");
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (scanf("%lf", &matrix[i][j]) != 1) {
+                    printf("Помилка: введено некоректне значення.\n");
                     while (getchar() != '\n');
+                    j--;
                 }
             }
         }
 
-        printf("Початкова матриця:\n");
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                printf("%.2f\t", matrix[i][j]);
+        printf("Введена матриця:\n");
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                printf("%8.3f ", matrix[i][j]);
             }
             printf("\n");
         }
 
-        AbsElem(matrix[0], rows, cols);
 
-        printf("Матриця після поділу на найбільший за модулем елемент:\n");
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                printf("%.2f\t", matrix[i][j]);
+        AbsElem(matrix, n, m);
+
+
+        printf("Нова матриця:\n");
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                printf("%8.3f ", matrix[i][j]);
             }
             printf("\n");
         }
 
-        printf("\nМеню:\n");
-        printf("1. Почати заново\n");
-        printf("0. Закінчити\n");
-        printf("Ваш вибір: ");
-        scanf(" %c", &choice);
-        getchar();
+        printf("Натисніть 1 щоб запустити програму спочатку або 0 щоб завершити програму: ");
+        if (scanf("%d", &choice) != 1) {
+            printf("Помилка: введено некоректне значення.\n");
+            while (getchar() != '\n');
+            choice = 1;
+        }
 
-    } while (choice != '0');
+    } while (choice != 0);
 
-    printf("Завершення програми.\n");
     return 0;
 }
