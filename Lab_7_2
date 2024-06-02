@@ -1,1 +1,85 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define LOW -100
+#define HIGH 100
+
+void massiv(int arr[], int size) {
+    for (int i = 0; i < size; i++) {
+        arr[i] = rand() % (HIGH - LOW + 1) + LOW;
+    }
+}
+
+int negative_elm(int arr[], int size) {
+    int product = 1;
+    int has_negative = 0;
+    for (int i = 0; i < size; i++) {
+        if (arr[i] < 0) {
+            product *= arr[i];
+            has_negative = 1;
+        }
+    }
+    return has_negative ? product : 0;
+}
+
+int sum_aft_min(int arr[], int size) {
+    if (size == 0) {
+        return 0;
+    }
+    int min_index = 0;
+    for (int i = 1; i < size; i++) {
+        if (arr[i] < arr[min_index]) {
+            min_index = i;
+        }
+    }
+    int sum = 0;
+    for (int i = min_index + 1; i < size; i++) {
+        sum += arr[i];
+    }
+    return sum;
+}
+
+void print_massiv(int arr[], int size) {
+    printf("Масив: ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+
+int input(const char* prompt) {
+    int value;
+    printf("%s", prompt);
+    while (scanf("%d", &value) != 1) {
+        while (getchar() != '\n');
+        printf("Будь ласка, введіть ціле число.\n%s", prompt);
+    }
+    return value;
+}
+
+void main_program() {
+    while (1) {
+        int size = input("Введіть розмір масиву: ");
+        int array[size];
+        
+        massiv(array, size);
+        print_massiv(array);
+        
+        printf("Добуток від'ємних елементів масиву: %d\n", negative_elm(array, size));
+        printf("Сума елементів масиву після мінімального елемента: %d\n", sum_aft_min(array, size));
+        
+        int choice = input("Введіть 1 щоб почати програму спочатку, або 0 щоб завершити програму: ");
+        if (choice == 0) {
+            printf("Програму завершено.\n");
+            break;
+        }
+    }
+}
+
+int main() {
+    srand(time(NULL));
+    main_program();
+    return 0;
+}
 
